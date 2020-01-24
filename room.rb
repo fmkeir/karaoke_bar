@@ -21,7 +21,7 @@ class Room
   end
 
   def add_guest(guest)
-    @guests_in_room.push(guest)
+    @guests_in_room.push(guest) if enough_space?()
   end
 
   def add_group(guest_array)
@@ -34,5 +34,9 @@ class Room
 
   def remove_group(guest_array)
     guest_array.each {|guest| remove_guest(guest)}
+  end
+
+  def enough_space?
+    return @guests_in_room.length < @capacity
   end
 end

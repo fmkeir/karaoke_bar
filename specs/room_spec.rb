@@ -68,4 +68,12 @@ class RoomTest < Minitest::Test
     @room.remove_group([@guest1, @guest3])
     assert_equal([@guest2], @room.view_current_guests)
   end
+
+  def test_add_guest__room_is_full
+    small_room = Room.new("Exclusive", @playlist, 2)
+    small_room.add_guest(@guest1)
+    small_room.add_guest(@guest1)
+    small_room.add_guest(@guest1)
+    assert_equal(2, small_room.view_current_guests.length)
+  end
 end
