@@ -76,4 +76,10 @@ class RoomTest < Minitest::Test
     small_room.add_guest(@guest1)
     assert_equal(2, small_room.view_current_guests.length)
   end
+
+  def test_add_group__not_enough_space_for_all
+    small_room = Room.new("Exclusive", @playlist, 2)
+    small_room.add_group(@group)
+    assert_equal(0, small_room.view_current_guests.length)
+  end
 end
