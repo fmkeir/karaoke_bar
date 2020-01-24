@@ -17,6 +17,7 @@ class KaraokeBarTest < Minitest::Test
     @guest1 = Guest.new("Bill Billerson", 42, 100, "Bohemian Rhapsody")
     @guest2 = Guest.new("Toby", 17, 50, "Can't stop")
     @guest3 = Guest.new("Steph", 25, 0, "Tribute")
+    @guest4 = Guest.new("Steph", 18, 4, "Tribute")
     @group = [@guest1, @guest2, @guest3]
 
     @karaoke_bar = KaraokeBar.new("Singha's", [@room1, @room2], 100, 5)
@@ -32,9 +33,21 @@ class KaraokeBarTest < Minitest::Test
     assert_equal(105, @karaoke_bar.till)
   end
 
+  def test_collect_entry_fee_from_guest__funds_unavailable
+    @karaoke_bar.collect_entry(@guest3)
+    assert_equal(0, @guest3.wallet)
+    assert_equal(100, @karaoke_bar.till)
+  end
+
   def test_collect_entry_fee_from_group__funds_available
     @karaoke_bar.collect_entry_group([@guest1, @guest2])
     assert_equal([95, 45], [@guest1.wallet, @guest2.wallet])
     assert_equal(110, @karaoke_bar.till)
+  end
+
+  def test_collect_entry_fee_from_group__funds_unavailable
+    @karaoke_bar.collect_entry_group([@guest3, @guest4])
+    assert_equal([0, 4], [@guest3.wallet, @guest4.wallet])
+    assert_equal(100, @karaoke_bar.till)
   end
 end

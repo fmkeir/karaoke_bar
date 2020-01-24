@@ -9,8 +9,10 @@ class KaraokeBar
   end
 
   def collect_entry(guest)
-    guest.wallet -= @entry_fee
-    @till += @entry_fee
+    if guest.wallet >= @entry_fee
+      guest.wallet -= @entry_fee
+      @till += @entry_fee
+    end
   end
 
   def collect_entry_group(guest_array)
