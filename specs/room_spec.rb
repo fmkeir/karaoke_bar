@@ -37,7 +37,29 @@ class RoomTest < Minitest::Test
     assert_equal(10, @room.capacity)
   end
 
-  def test_get_current_guests__none
+  def test_get_current_guests
     assert_equal([], @room.view_current_guests)
+  end
+
+  def test_add_guest
+    @room.add_guest(@guest1)
+    assert_equal([@guest1], @room.view_current_guests)
+  end
+
+  def test_add_group
+    @room.add_group(@group)
+    assert_equal(@group, @room.view_current_guests)
+  end
+
+  def test_remove_guest
+    @room.add_group(@group)
+    @room.remove_guest(@guest1)
+    assert_equal([@guest2, @guest3], @room.view_current_guests)
+  end
+
+  def test_remove_group
+    @room.add_group(@group)
+    @room.remove_group([@guest1, @guest3])
+    assert_equal([@guest2], @room.view_current_guests)
   end
 end
