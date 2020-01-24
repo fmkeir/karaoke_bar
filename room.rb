@@ -11,4 +11,8 @@ class Room
   def playlist_copy
     return @playlist[0..-1]
   end
+
+  def view_current_guests
+    return @guests_in_room[0..-1]
+  end
 end
