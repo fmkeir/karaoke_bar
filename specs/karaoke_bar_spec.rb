@@ -80,4 +80,10 @@ class KaraokeBarTest < Minitest::Test
     assert_equal(115, @karaoke_bar.till)
     assert_equal([@guest1, @guest2, @guest4], @room2.view_current_guests)
   end
+
+  def test_dont_allow_barred_guest
+    @karaoke_bar.ban_guest(@guest1)
+    @karaoke_bar.book_guest_into_room(@guest1, @room1)
+    assert_equal([], @room1.view_current_guests)
+  end
 end

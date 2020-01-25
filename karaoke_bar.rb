@@ -6,6 +6,7 @@ class KaraokeBar
     @name = name
     @rooms = rooms
     @till = till
+    @banned_guests = []
     @entry_fee = 5
     # Group discounts as a percentage of entry fee for a group of key or more
     @group_discounts = {
@@ -17,7 +18,7 @@ class KaraokeBar
 
   def collect_entry(guest, group_discount=1)
     actual_entry_fee = @entry_fee * group_discount
-    if guest.wallet >= actual_entry_fee
+    if guest.wallet >= actual_entry_fee && not_banned?(guest)
       guest.wallet -= actual_entry_fee
       @till += actual_entry_fee
       return true
@@ -43,7 +44,16 @@ class KaraokeBar
   def book_guest_into_room(guest, room)
     room.add_guest(guest) if collect_entry(guest)
   end
+
   def book_group_into_room(group, room)
     room.add_group(group) if collect_entry_group(group)
+  end
+
+  def ban_guest(guest)
+    @banned_guests.push(guest)
+  end
+
+  def not_banned?(guest)
+    return !@banned_guests.include?(guest)
   end
 end
