@@ -17,7 +17,7 @@ class KaraokeBarTest < Minitest::Test
     @guest1 = Guest.new("Bill Billerson", 42, 100, "Bohemian Rhapsody")
     @guest2 = Guest.new("Toby", 17, 50, "Can't stop")
     @guest3 = Guest.new("Steph", 25, 0, "Tribute")
-    @guest4 = Guest.new("Steph", 18, 4, "Tribute")
+    @guest4 = Guest.new("Steph", 18, 4, "Livin' on a prayer")
     @group = [@guest1, @guest2, @guest3]
 
     @karaoke_bar = KaraokeBar.new("Singha's", [@room1, @room2], 100, 5)
