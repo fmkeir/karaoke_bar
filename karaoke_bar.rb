@@ -20,6 +20,7 @@ class KaraokeBar
     if guest.wallet >= actual_entry_fee
       guest.wallet -= actual_entry_fee
       @till += actual_entry_fee
+      return true
     end
   end
 
@@ -37,5 +38,12 @@ class KaraokeBar
       end
     end
     return discount_multiplier
+  end
+
+  def book_guest_into_room(guest, room)
+    room.add_guest(guest) if collect_entry(guest)
+  end
+  def book_group_into_room(group, room)
+    room.add_group(group) if collect_entry_group(group)
   end
 end

@@ -68,4 +68,16 @@ class KaraokeBarTest < Minitest::Test
     @karaoke_bar.collect_entry_group(large_group)
     assert_equal(122.5, @karaoke_bar.till)
   end
+
+  def test_book_guest_into_room
+    @karaoke_bar.book_guest_into_room(@guest1, @room1)
+    assert_equal(105, @karaoke_bar.till)
+    assert_equal([@guest1], @room1.view_current_guests)
+  end
+
+  def test_book_group_into_room
+    @karaoke_bar.book_group_into_room([@guest1, @guest2, @guest4], @room2)
+    assert_equal(115, @karaoke_bar.till)
+    assert_equal([@guest1, @guest2, @guest4], @room2.view_current_guests)
+  end
 end
