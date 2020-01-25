@@ -17,10 +17,11 @@ class KaraokeBarTest < Minitest::Test
     @guest1 = Guest.new("Bill Billerson", 42, 100, "Bohemian Rhapsody")
     @guest2 = Guest.new("Toby", 17, 50, "Can't stop")
     @guest3 = Guest.new("Steph", 25, 0, "Tribute")
-    @guest4 = Guest.new("Steph", 18, 4, "Livin' on a prayer")
+    @guest4 = Guest.new("Amy", 18, 10, "Livin' on a prayer")
+    @guest5 = Guest.new("Charles", 18, 4, "Save tonight")
     @group = [@guest1, @guest2, @guest3]
 
-    @karaoke_bar = KaraokeBar.new("Singha's", [@room1, @room2], 100, 5)
+    @karaoke_bar = KaraokeBar.new("Singha's", [@room1, @room2], 100)
   end
 
   def test_get_name
@@ -46,8 +47,25 @@ class KaraokeBarTest < Minitest::Test
   end
 
   def test_collect_entry_fee_from_group__funds_unavailable
-    @karaoke_bar.collect_entry_group([@guest3, @guest4])
-    assert_equal([0, 4], [@guest3.wallet, @guest4.wallet])
+    @karaoke_bar.collect_entry_group([@guest3, @guest5])
+    assert_equal([0, 4], [@guest3.wallet, @guest5.wallet])
     assert_equal(100, @karaoke_bar.till)
+  end
+
+  def test_determine_group_discount__none
+    assert_equal(1, @karaoke_bar.determine_group_discount(@group))
+  end
+
+  def test_determine_group_discount__6_or_more
+    large_group = [@guest1, @guest1, @guest1, @guest1, @guest1, @guest1]
+    assert_equal(0.8, @karaoke_bar.determine_group_discount(large_group))
+  end
+
+  def test_collect_entry_fee_from_group__discount
+    @guest3.wallet += 5
+    @guest5.wallet += 5
+    large_group = [@guest1, @guest2, @guest3, @guest4, @guest5]
+    @karaoke_bar.collect_entry_group(large_group)
+    assert_equal(122.5, @karaoke_bar.till)
   end
 end
